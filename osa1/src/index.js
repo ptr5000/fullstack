@@ -43,6 +43,7 @@ class App extends React.Component {
          }
     }
 
+    // tehty jo
     lisaaPalaute = (p) => {
         return () => {
             let s = {}
