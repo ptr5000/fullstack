@@ -15,6 +15,7 @@ const Statistics = ({state}) => {
     return (
         <div>
             <table>
+                <tbody>
                 <Statistic nimi="Hyvä" arvo={state.hyva} />
                 <Statistic nimi="Neutraali" arvo={state.neutraali} />
                 <Statistic nimi="Huono" arvo={state.huono} />
@@ -24,6 +25,7 @@ const Statistics = ({state}) => {
                 
                 <Statistic nimi="Positiivisia" arvo={((state.hyva) / 
                         (state.hyva + state.huono + state.neutraali)*100).toFixed(2)} />
+                </tbody>
             </table>
         </div>
     )}
