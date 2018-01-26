@@ -5,10 +5,22 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selected: 0
+      selected: 0,
+      votes: []
+    }
+
+    for(let i=0;i<anecdotes.length;i++) {
+        this.state.votes[i] = 0
     }
   }
 
+  vote = () => {
+    return () => {
+        const votes = {...this.state.votes}
+        votes[this.state.selected]++;
+        this.setState({votes: votes})
+    }
+}
   randomoi = () => {
         return () => {
             this.setState({selected: Math.floor(Math.random()*anecdotes.length)})
@@ -18,8 +30,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this.randomoi()}>Arvo</button>
+        <button onClick={this.randomoi()}>Next anecdote</button>
+        <button onClick={this.vote()}>Vote</button>
         {this.props.anecdotes[this.state.selected]}
+        <p>has {this.state.votes[this.state.selected]} votes</p>
       </div>
     )
   }
