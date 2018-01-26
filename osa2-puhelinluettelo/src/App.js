@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios'
+import Client from './client.js'
 
 const Numbers = ({persons, filter}) => (
 	<table>
@@ -39,8 +39,7 @@ class App extends React.Component {
 	}
 
 	componentWillMount() {
-		axios
-		  .get('http://localhost:3001/persons')
+		Client.getPhonebook()
 		  .then(response => {
 			this.setState({ persons: response.data })
 		  })
@@ -58,8 +57,7 @@ class App extends React.Component {
 			persons.push({ name, number })
 			this.setState({ newName: '', newNumber: '', persons })
 
-			axios
-				.post('http://localhost:3001/persons', {name, number})
+			Client.sendContact({name, number})
 				.then(response => {
 					console.log(response.data)
 					//this.setState({ persons: response.data })
