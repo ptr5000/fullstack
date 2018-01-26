@@ -1,4 +1,14 @@
 import React from 'react';
+import axios from 'axios'
+
+const Numbers = ({persons, filter}) => (
+	<table>
+		<tbody>
+			{persons.filter(p => p.name.startsWith(filter))
+				.map(person => <tr key={person.name}><td>{person.name}</td><td>{person.number}</td></tr>)}
+		</tbody>
+	</table>
+)
 
 class App extends React.Component {
 	constructor(props) {
@@ -12,6 +22,15 @@ class App extends React.Component {
 			searchField: ''
 		}
 	}
+
+	componentWillMount() {
+		axios
+		  .get('http://localhost:3001/persons')
+		  .then(response => {
+			this.setState({ persons: response.data })
+		  })
+	  }
+	
 
 	lisaaNimi = (event) => {
 		event.preventDefault()
@@ -61,13 +80,9 @@ class App extends React.Component {
 						<button type="submit">lisää</button>
 					</div>
 				</form>
+
 				<h2>Numerot</h2>
-				<table>
-					<tbody>
-						{this.state.persons.filter(p => p.name.startsWith(this.state.searchField))
-							.map(person => <tr key={person.name}><td>{person.name}</td><td>{person.number}</td></tr>)}
-					</tbody>
-				</table>
+				<Numbers persons={this.state.persons} filter={this.state.searchField} />
 			</div>
 		)
 	}
