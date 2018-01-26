@@ -1,6 +1,36 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+const Button = ({handleClick, text}) => (
+    <button onClick={handleClick}>{text}</button>
+)
+
+const Statistic = ({nimi, arvo}) => (
+    <div>{nimi} {arvo}</div>
+)
+
+
+const Statistics = ({state}) => {
+    if(state.hyva + state.huono + state.neutraali > 0) {
+    return (
+        <div>
+            <Statistic nimi="Hyvä" arvo={state.hyva} />
+            <Statistic nimi="Neutraali" arvo={state.neutraali} />
+            <Statistic nimi="Huono" arvo={state.huono} />
+
+            <Statistic nimi="Keskiarvo" arvo={((state.hyva - state.huono) / 
+                (state.hyva + state.huono + state.neutraali)).toFixed(1)} />
+            
+            <Statistic nimi="Positiivisia" arvo={((state.hyva) / 
+                    (state.hyva + state.huono + state.neutraali)*100).toFixed(2)} />
+        </div>
+    )}
+    else {
+        return (
+            <div>Ei yhtään palautetta annettu</div>
+        )
+    }
+}
 
 class App extends React.Component {
     constructor() {
@@ -25,20 +55,13 @@ class App extends React.Component {
         return (
             <div>
                 <h1>Anna palautetta</h1>
-                <button onClick={this.lisaaPalaute('hyva')}>Hyvä</button>
-                <button onClick={this.lisaaPalaute('neutraali')}>Neutraali</button>
-                <button onClick={this.lisaaPalaute('huono')}>Huono</button>
+                <Button handleClick={this.lisaaPalaute('hyva')} text="Hyvä" />
+                <Button handleClick={this.lisaaPalaute('neutraali')} text="Neutraali" />
+                <Button handleClick={this.lisaaPalaute('huono')} text="Huono" />
 
                 <h1>Statistiikka</h1>
-                <p>Hyvä {this.state.hyva}</p>
-                <p>Neutraali {this.state.neutraali}</p>
-                <p>Huono {this.state.huono}</p>
-
-                <p>Keskiarvo {((this.state.hyva - this.state.huono) / 
-                    (this.state.hyva + this.state.huono + this.state.neutraali)).toFixed(1) }</p>
-
-                <p>Positiivisia {((this.state.hyva) / 
-                    (this.state.hyva + this.state.huono + this.state.neutraali)*100).toFixed(2) }%</p>
+              
+                <Statistics state={this.state} />
             </div>
         )
     }
