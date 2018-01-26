@@ -16,7 +16,7 @@ class App extends React.Component {
 
   vote = () => {
     return () => {
-        const votes = {...this.state.votes}
+        const votes = [...this.state.votes]
         votes[this.state.selected]++;
         this.setState({votes: votes})
     }
@@ -28,12 +28,20 @@ class App extends React.Component {
     }
 
   render() {
+    let best = this.state.votes.indexOf(
+        Math.max(...this.state.votes));
+
     return (
       <div>
         <button onClick={this.randomoi()}>Next anecdote</button>
         <button onClick={this.vote()}>Vote</button>
         {this.props.anecdotes[this.state.selected]}
         <p>has {this.state.votes[this.state.selected]} votes</p>
+
+        <h1>Anecdote with motes votes:</h1>
+        {this.props.anecdotes[best]}
+        <p>has {this.state.votes[best]} votes</p>
+
       </div>
     )
   }
