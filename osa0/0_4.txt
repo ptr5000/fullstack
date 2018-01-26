@@ -1,0 +1,11 @@
+title Lisäys
+
+käyttäjä->selain: lisää tekstin ja painaa talleta
+selain->palvelin: POST /new_note
+palvelin->selain: 302 REDIRECT
+selain->palvelin: GET /notes
+palvelin->selain: 200 OK
+selain->käyttäjä: Sivu latautuu uusiksi
+
+
+

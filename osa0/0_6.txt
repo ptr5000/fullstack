@@ -1,0 +1,9 @@
+title Lisäys
+
+käyttäjä->selain: lisää tekstin ja painaa talleta
+selain->palvelin: POST /new_note_spa
+palvelin->selain: 201, json payloadilla
+selain->selain: app muuttaa DOM:ia.
+selain->käyttäjä: muutos näkyy
+
+

@@ -1,0 +1,16 @@
+title Muistiinpanot
+
+kayttaja->selain: Lataa notes
+selain->palvelin: GET /notes
+palvelin->selain: 200 OK
+selain->palvelin: GET /notes/main.css
+palvelin->selain: 200 OK
+selain->palvelin: GET /notes/main.js
+palvelin->selain: 200 OK
+selain->selain: aloita sivun rendaaminen
+selain->kayttaja: rendattu sivu
+selain->palvelin: GET /notes/data.json
+palvelin->selain: 200 OK
+selain->kayttaja: listan tiedot 
+
+
