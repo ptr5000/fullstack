@@ -6,7 +6,7 @@ const Button = ({handleClick, text}) => (
 )
 
 const Statistic = ({nimi, arvo}) => (
-    <div>{nimi} {arvo}</div>
+    <tr><td>{nimi}</td><td>{arvo}</td></tr>
 )
 
 
@@ -14,15 +14,17 @@ const Statistics = ({state}) => {
     if(state.hyva + state.huono + state.neutraali > 0) {
     return (
         <div>
-            <Statistic nimi="Hyvä" arvo={state.hyva} />
-            <Statistic nimi="Neutraali" arvo={state.neutraali} />
-            <Statistic nimi="Huono" arvo={state.huono} />
+            <table>
+                <Statistic nimi="Hyvä" arvo={state.hyva} />
+                <Statistic nimi="Neutraali" arvo={state.neutraali} />
+                <Statistic nimi="Huono" arvo={state.huono} />
 
-            <Statistic nimi="Keskiarvo" arvo={((state.hyva - state.huono) / 
-                (state.hyva + state.huono + state.neutraali)).toFixed(1)} />
-            
-            <Statistic nimi="Positiivisia" arvo={((state.hyva) / 
-                    (state.hyva + state.huono + state.neutraali)*100).toFixed(2)} />
+                <Statistic nimi="Keskiarvo" arvo={((state.hyva - state.huono) / 
+                    (state.hyva + state.huono + state.neutraali)).toFixed(1)} />
+                
+                <Statistic nimi="Positiivisia" arvo={((state.hyva) / 
+                        (state.hyva + state.huono + state.neutraali)*100).toFixed(2)} />
+            </table>
         </div>
     )}
     else {
@@ -43,7 +45,6 @@ class App extends React.Component {
          }
     }
 
-    // tehty jo
     lisaaPalaute = (p) => {
         return () => {
             let s = {}
