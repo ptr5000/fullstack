@@ -22,8 +22,6 @@ class App extends React.Component {
     }
 
     render() {
-
-
         return (
             <div>
                 <h1>Anna palautetta</h1>
@@ -35,7 +33,12 @@ class App extends React.Component {
                 <p>Hyvä {this.state.hyva}</p>
                 <p>Neutraali {this.state.neutraali}</p>
                 <p>Huono {this.state.huono}</p>
-                
+
+                <p>Keskiarvo {((this.state.hyva - this.state.huono) / 
+                    (this.state.hyva + this.state.huono + this.state.neutraali)).toFixed(1) }</p>
+
+                <p>Positiivisia {((this.state.hyva) / 
+                    (this.state.hyva + this.state.huono + this.state.neutraali)*100).toFixed(2) }%</p>
             </div>
         )
     }
