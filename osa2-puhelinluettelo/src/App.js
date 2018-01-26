@@ -10,6 +10,21 @@ const Numbers = ({persons, filter}) => (
 	</table>
 )
 
+const AddForm = ({handleSubmit, handleNameChange, handleNumberChange, newName, newNumber}) => (
+	<form onSubmit={handleSubmit}>
+		<div>
+			nimi: <input value={newName}
+				onChange={handleNameChange} />
+
+			numero: <input value={newNumber}
+				onChange={handleNumberChange} />
+		</div>
+		<div>
+			<button type="submit">lisää</button>
+		</div>
+	</form>
+)
+
 class App extends React.Component {
 	constructor(props) {
 		super(props)
@@ -42,6 +57,13 @@ class App extends React.Component {
 		if (persons.filter(p => p.name === name).length === 0) {
 			persons.push({ name, number })
 			this.setState({ newName: '', newNumber: '', persons })
+
+			axios
+				.post('http://localhost:3001/persons', {name, number})
+				.then(response => {
+					console.log(response.data)
+					//this.setState({ persons: response.data })
+				})
 		}
 	}
 
@@ -68,18 +90,11 @@ class App extends React.Component {
 				</div>
 
 				<h1>Lisää uusi</h1>
-				<form onSubmit={this.lisaaNimi}>
-					<div>
-						nimi: <input value={this.state.newName}
-							onChange={this.handleNameChange} />
-
-						numero: <input value={this.state.newNumber}
-							onChange={this.handleNumberChange} />
-					</div>
-					<div>
-						<button type="submit">lisää</button>
-					</div>
-				</form>
+				<AddForm handleSubmit={this.lisaaNimi} 
+						handleNumberChange={this.handleNumberChange}
+						handleNameChange={this.handleNameChange}
+						newName={this.state.newName}
+						newNumber={this.state.newNumber} />
 
 				<h2>Numerot</h2>
 				<Numbers persons={this.state.persons} filter={this.state.searchField} />
