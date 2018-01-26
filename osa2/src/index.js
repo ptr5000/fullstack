@@ -31,10 +31,7 @@ const Osa = (props) => {
 const Sisalto = (props) => {
     return (
         <div>
-            <Osa osa={props.osat[0].nimi} tehtavia={props.osat[0].tehtavia} />
-            <Osa osa={props.osat[1].nimi} tehtavia={props.osat[1].tehtavia} />
-            <Osa osa={props.osat[2].nimi} tehtavia={props.osat[2].tehtavia} />
-            
+            {props.osat.map(osa => <Osa key={osa.id} osa={osa.nimi} tehtavia={osa.tehtavia} />)}
         </div>
     )
 }
@@ -42,30 +39,56 @@ const Sisalto = (props) => {
 const Yhteensa = (props) => {
     return (
         <div>
-            <p>yhteensä {props.osat[0].tehtavia + props.osat[1].tehtavia + props.osat[2].tehtavia} tehtävää</p>
+            <p>yhteensä {props.osat.map(t=>t.tehtavia).reduce((p,curr)=>curr+p)} tehtävää</p>
         </div>
     )
 }
 
 const App = () => {
 
-    const kurssi = {
-        nimi: 'Half Stack -sovelluskehitys',
-        osat: [{
-            nimi: 'Reactin perusteet',
-            tehtavia: 10
-        },{
-            nimi: 'Tiedonvälitys propseilla',
-            tehtavia: 7
-        },{
-            nimi: 'Komponenttien tila',
-            tehtavia: 14
-        }]
-    }
+    const kurssit = [
+        {
+          nimi: 'Half Stack -sovelluskehitys',
+          id: 1,
+          osat: [
+            {
+              nimi: 'Reactin perusteet',
+              tehtavia: 10,
+              id: 1
+            },
+            {
+              nimi: 'Tiedonvälitys propseilla',
+              tehtavia: 7,
+              id: 2
+            },
+            {
+              nimi: 'Komponenttien tila',
+              tehtavia: 14,
+              id: 3
+            }
+          ]
+        },
+        {
+          nimi: 'Node.js',
+          id: 2,
+          osat: [
+            {
+              nimi: 'Routing',
+              tehtavia: 3,
+              id: 1
+            },
+            {
+              nimi: 'Middlewaret',
+              tehtavia: 7,
+              id: 2
+            }
+          ]
+        }
+      ]
 
     return (
         <div>
-            <Kurssi kurssi={kurssi} />
+            {kurssit.map(kurssi => <Kurssi key={kurssi.id} kurssi={kurssi} />)}
         </div>
     )
 }
