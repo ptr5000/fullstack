@@ -1,11 +1,17 @@
 import React from 'react';
 import Client from './client.js'
 
-const Numbers = ({persons, filter}) => (
+const Numbers = ({persons, filter, deleteContact}) => (
 	<table>
 		<tbody>
 			{persons.filter(p => p.name.startsWith(filter))
-				.map(person => <tr key={person.name}><td>{person.name}</td><td>{person.number}</td></tr>)}
+				.map(person => 
+					<tr key={person.name}>
+						<td>{person.name}</td>
+						<td>{person.number}</td>
+						<td><button onClick={deleteContact(person)}>Delete</button></td>
+					</tr>
+				)}
 		</tbody>
 	</table>
 )
@@ -77,6 +83,20 @@ class App extends React.Component {
 		this.setState({ searchField: event.target.value })
 	}
 
+	deleteContact = (person) => {
+		return () => {
+
+			if(window.confirm("Poistetaanko " + person.name + "?")) {
+				Client.deleteContact(person.id)
+					.then(response => {
+						let persons = this.state.persons.filter(contact=>contact.id !== person.id)
+						this.setState({ persons })
+					})
+			}
+			
+		}
+	}
+
 	render() {
 		return (
 			<div>
@@ -95,7 +115,9 @@ class App extends React.Component {
 						newNumber={this.state.newNumber} />
 
 				<h2>Numerot</h2>
-				<Numbers persons={this.state.persons} filter={this.state.searchField} />
+				<Numbers persons={this.state.persons} 
+						filter={this.state.searchField}
+						deleteContact={this.deleteContact} />
 			</div>
 		)
 	}
