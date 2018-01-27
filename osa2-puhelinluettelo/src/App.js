@@ -59,7 +59,8 @@ class App extends React.Component {
 		let number = this.state.newNumber
 		let persons = [...this.state.persons]
 
-		if (persons.filter(p => p.name === name).length === 0) {
+		let existingContacts = persons.filter(p => p.name === name)
+		if (existingContacts.length === 0) {
 			persons.push({ name, number })
 			this.setState({ newName: '', newNumber: '', persons })
 
@@ -68,6 +69,22 @@ class App extends React.Component {
 					console.log(response.data)
 					//this.setState({ persons: response.data })
 				})
+		} else {
+			let person = existingContacts[0]
+			console.log(person);
+
+			if(window.confirm("Korvataanko " + person.name + "?")) {
+				
+				Client.sendContact({name, number})
+				.then(response => {
+					Client.deleteContact(person.id)
+					.then(response => {
+						let persons = this.state.persons.filter(contact=>contact.id !== person.id)
+						persons.push({ name, number })
+						this.setState({ newName: '', newNumber: '', persons })
+					})
+				})		
+			}
 		}
 	}
 
