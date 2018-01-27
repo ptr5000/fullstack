@@ -1,6 +1,17 @@
 import React from 'react';
 import Client from './client.js'
 
+const Notification = ({ message }) => {
+	if (message === null) {
+	  return null
+	}
+	return (
+	  <div className="notification">
+		{message}
+	  </div>
+	)
+}
+
 const Numbers = ({persons, filter, deleteContact}) => (
 	<table>
 		<tbody>
@@ -40,7 +51,8 @@ class App extends React.Component {
 			],
 			newName: '',
 			newNumber: '',
-			searchField: ''
+			searchField: '',
+			message: null
 		}
 	}
 
@@ -66,24 +78,26 @@ class App extends React.Component {
 
 			Client.sendContact({name, number})
 				.then(response => {
-					console.log(response.data)
-					//this.setState({ persons: response.data })
+					this.setNotification(name + " lisätty")
 				})
 		} else {
 			let person = existingContacts[0]
 			console.log(person);
 
 			if(window.confirm("Korvataanko " + person.name + "?")) {
-				
 				Client.sendContact({name, number})
 				.then(response => {
 					Client.deleteContact(person.id)
 					.then(response => {
-						let persons = this.state.persons.filter(contact=>contact.id !== person.id)
-						persons.push({ name, number })
-						this.setState({ newName: '', newNumber: '', persons })
+						// Älä välitä jos delete ei onnistu.
 					})
-				})		
+
+					let persons = this.state.persons.filter(contact=>contact.id !== person.id)
+					persons.push({ name, number })
+					this.setState({ newName: '', newNumber: '', persons })
+					this.setNotification(person.name + " numero muutettu")
+				})
+				
 			}
 		}
 	}
@@ -100,6 +114,11 @@ class App extends React.Component {
 		this.setState({ searchField: event.target.value })
 	}
 
+	setNotification = (message) => {
+		this.setState({message})
+		setTimeout(() => { this.setState({message: null}) }, 2000)
+	}
+
 	deleteContact = (person) => {
 		return () => {
 
@@ -108,6 +127,8 @@ class App extends React.Component {
 					.then(response => {
 						let persons = this.state.persons.filter(contact=>contact.id !== person.id)
 						this.setState({ persons })
+
+						this.setNotification(person.name + " poistettu")
 					})
 			}
 			
@@ -118,6 +139,8 @@ class App extends React.Component {
 		return (
 			<div>
 				<h2>Puhelinluettelo</h2>
+
+				<Notification message={this.state.message} />
 
 				<div>
 				<p>rajaa näytettäviä: <input value={this.state.searchField}
