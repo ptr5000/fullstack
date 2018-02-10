@@ -68,6 +68,14 @@ describe('fav blog', () => {
 describe('most blogs', () => {
   test('mostblogs', () => {
     const result = listHelper.mostBlogs(blogs)
-    expect(result).toBe("Robert C. Martin")
+    expect(result.author).toBe("Robert C. Martin")
+  })
+})
+
+describe('author with most likes', () => {
+  test('author with most likes', () => {
+    const result = listHelper.mostLikes(blogs)
+    console.log(result)
+    expect(result.author).toBe("Edsger W. Dijkstra")
   })
 })
