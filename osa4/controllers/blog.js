@@ -10,14 +10,11 @@ blogRouter.get('/api/blogs', (request, response) => {
     })
 })
 
-blogRouter.post('/api/blogs', (request, response) => {
-  const blog = new Blog(request.body)
+blogRouter.post('/api/blogs', async (request, response) => {
+    const blog = new Blog(request.body)
 
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
+    let result = await blog.save()
+    response.status(201).json(result)
 })
 
 
