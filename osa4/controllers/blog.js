@@ -19,26 +19,35 @@ blogRouter.post('/api/blogs', async(request, response) => {
       .status(201)
       .json(result)
   } else {
-      response
-        .status(400)
-        .send({error: "title or url missing"})
+    response
+      .status(400)
+      .send({error: "title or url missing"})
   }
 })
 
-blogRouter.delete('/api/blogs', async(request, response) => {
+blogRouter.delete('/api/blogs/:id', async(request, response) => {
+
+  let res = await Blog.findByIdAndRemove(request.params.id)
+
+  response
+    .status(200)
+    .end()
+
+})
+
+blogRouter.put('/api/blogs', async(request, response) => {
 
   if ('id' in request.body) {
-    let res = await Blog.findByIdAndRemove(request.body['id'])
+    let res = await Blog.findByIdAndUpdate(request.body._id)
 
     response
       .status(200)
       .end()
   } else {
-      response
-        .status(400)
-        .send({error: "title or url missing"})
+    response
+      .status(400)
+      .send({error: "title or url missing"})
   }
 })
-
 
 module.exports = blogRouter

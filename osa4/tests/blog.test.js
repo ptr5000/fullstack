@@ -21,8 +21,7 @@ test('blogs are deleted', async() => {
   let result = await blog.save()
 
   const response = await api
-    .delete('/api/blogs')
-    .send({id: result._id})
+    .delete('/api/blogs/' + result._id)
     .expect(200)
    
   expect(await Blog.findById(result._id)).toBe(null);
