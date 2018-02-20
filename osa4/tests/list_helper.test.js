@@ -51,6 +51,8 @@ const blogs = [
   }  
 ]
 
+
+
 describe('total likes', () => {
   test('when list has only one blog equals the likes of that', () => {
     const result = listHelper.totalLikes(blogs)
@@ -79,3 +81,4 @@ describe('author with most likes', () => {
     expect(result.author).toBe("Edsger W. Dijkstra")
   })
 })
+
