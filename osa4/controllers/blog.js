@@ -11,9 +11,8 @@ blogRouter.get('/api/blogs', (request, response) => {
 })
 
 blogRouter.post('/api/blogs', async(request, response) => {
-  console.log(request.body)
   if ('title' in request.body) {
-    const blog = new Blog(request.body)
+    let blog = new Blog(request.body)
 
     let result = await blog.save()
     response
@@ -25,5 +24,21 @@ blogRouter.post('/api/blogs', async(request, response) => {
         .send({error: "title or url missing"})
   }
 })
+
+blogRouter.delete('/api/blogs', async(request, response) => {
+
+  if ('id' in request.body) {
+    let res = new Blog.findByIdAndRemove({id: request.body['id']})
+
+    response
+      .status(200)
+      .json(res)
+  } else {
+      response
+        .status(400)
+        .send({error: "title or url missing"})
+  }
+})
+
 
 module.exports = blogRouter

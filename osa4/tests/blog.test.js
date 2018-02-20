@@ -14,6 +14,22 @@ test('blogs are returned', async() => {
   expect(response.body.length).toBe(blogsInDb.length)
 })
 
+
+test('blogs are deleted', async() => {
+  const blogsInDb = await Blog.find({})
+
+  const response = await api
+    .delete('/api/blogs')
+    .send({id: blogsInDb[0]._id})
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsInDbAfterDelete = await Blog.find({})
+
+  expect(blogsInDbAfterDelete.length).toBe(blogsInDb.length-1)
+})
+
+
 test('blog post is created', async() => {
   await api
     .post('/api/blogs')
