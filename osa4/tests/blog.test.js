@@ -29,6 +29,24 @@ test('blogs are deleted', async() => {
 })
 
 
+test('blogs are updated', async() => {
+  let blog = new Blog({author: 'Jorma', url:'example.com'})
+
+  let result = await blog.save()
+
+  const response = await api
+    .put('/api/blogs/' + result._id)
+    .send({author:"Keijo", likes: 10})
+    .expect(200)
+   
+  newBlog = await Blog.findById(result._id)
+
+  expect(newBlog.author).toBe('Keijo');
+  expect(newBlog.likes).toBe(10);
+})
+
+
+
 test('blog post is created', async() => {
   await api
     .post('/api/blogs')

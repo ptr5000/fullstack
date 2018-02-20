@@ -35,19 +35,12 @@ blogRouter.delete('/api/blogs/:id', async(request, response) => {
 
 })
 
-blogRouter.put('/api/blogs', async(request, response) => {
+blogRouter.put('/api/blogs/:id', async(request, response) => {
+  let res = await Blog.findByIdAndUpdate(request.params.id, request.body)
 
-  if ('id' in request.body) {
-    let res = await Blog.findByIdAndUpdate(request.body._id)
-
-    response
-      .status(200)
-      .end()
-  } else {
-    response
-      .status(400)
-      .send({error: "title or url missing"})
-  }
+  response
+    .status(200)
+    .end()
 })
 
 module.exports = blogRouter
