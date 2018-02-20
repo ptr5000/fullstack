@@ -28,11 +28,11 @@ blogRouter.post('/api/blogs', async(request, response) => {
 blogRouter.delete('/api/blogs', async(request, response) => {
 
   if ('id' in request.body) {
-    let res = new Blog.findByIdAndRemove({id: request.body['id']})
+    let res = await Blog.findByIdAndRemove(request.body['id'])
 
     response
       .status(200)
-      .json(res)
+      .end()
   } else {
       response
         .status(400)
