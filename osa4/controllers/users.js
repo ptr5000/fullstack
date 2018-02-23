@@ -6,18 +6,30 @@ usersRouter.post('/', async (request, response) => {
   try {
     const body = request.body
 
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(body.password, saltRounds)
+    if(body.username.length < 3) {
+      response.status(412).send("Username too short")
+    } else {
+      let existingUser = await User.findOne({username: body.username})
 
-    const user = new User({
-      username: body.username,
-      name: body.name,
-      passwordHash
-    })
+      if(existingUser != null) {
+        response.status(409).send("User already exists")
+        return;
+      }
 
-    const savedUser = await user.save()
+      const saltRounds = 10
+      const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
-    response.json(savedUser)
+      const user = new User({
+        username: body.username,
+        name: body.name,
+        passwordHash,
+        adult: body.adult
+      })
+
+      const savedUser = await user.save()
+
+      response.status(201).json(savedUser)
+    }
   } catch (exception) {
     console.log(exception)
     response.status(500).json({ error: 'something went wrong...' })
