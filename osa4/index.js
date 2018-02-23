@@ -6,9 +6,12 @@ const cors = require('cors')
 const blogRouter = require('./controllers/blog')
 const mongoose = require('mongoose')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
+const tokenParser = require('./middleware/tokenparser.js')
+
 app.use(cors())
 app.use(bodyParser.json())
-
+app.use(tokenParser)
 
 if ( process.env.NODE_ENV !== 'production' ) {
     require('dotenv').config()
@@ -23,6 +26,7 @@ const PORT = 3003
 
 app.use('/', blogRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 
 const server = http.createServer(app)
 
