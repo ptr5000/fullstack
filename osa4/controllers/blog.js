@@ -46,6 +46,23 @@ blogRouter.post('/api/blogs', async(request, response) => {
 })
 
 blogRouter.delete('/api/blogs/:id', async(request, response) => {
+  if (!request.token) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const decodedToken = jwt.verify(request.token, "ASDF")
+
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
+  let blog = await Blog.findById(request.params.id)
+  
+  if(blog.user.toString() !== decodedToken.id) {
+    response
+      .status(401)
+      .end()
+  }
 
   let res = await Blog.findByIdAndRemove(request.params.id)
 
