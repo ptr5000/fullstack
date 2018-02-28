@@ -1,5 +1,6 @@
 import React from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 export class Blog extends React.Component {
   constructor(props) {
@@ -72,6 +73,7 @@ export class Blog extends React.Component {
     )
   }
 }
+
 export class BlogForm extends React.Component {
   constructor(props) {
     super(props)
@@ -134,4 +136,9 @@ export class BlogForm extends React.Component {
       )
     }
   }
+}
+
+
+BlogForm.propTypes = {
+  handleBlogAdded: PropTypes.func.isRequired,
 }
