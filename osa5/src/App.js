@@ -59,7 +59,11 @@ class App extends React.Component {
   }
 
   handleLogin = (event) => {
+
+    console.log("handle login ")
+
     event.preventDefault()
+
     blogService
       .login(this.state.username, this.state.password)
       .then(resp => {
@@ -76,6 +80,7 @@ class App extends React.Component {
       .catch(resp => {
         this.setMessage('Login failed');
       })
+      
   }
 
   handleLogout = (event) => {
@@ -109,6 +114,7 @@ class App extends React.Component {
   render() {
 
     if (this.state.token == null) {
+      console.log("Not logged in")
       return (
         <div>
           <MessageBox message={this.state.message}/>
@@ -121,7 +127,7 @@ class App extends React.Component {
         </div>
       )
     } else {
-      
+      console.log("Logged in")
       return (
         <div>
           <MessageBox message={this.state.message}/>

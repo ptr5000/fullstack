@@ -30,8 +30,7 @@ const getAll = () => {
 }
 
 const login = (username, password) => {
-  const request = axios.post('/api/login', {username, password})
-  return request.then(response => response.data)
+  return Promise.resolve({token: '1234', name: "Test User", username: username})
 }
 
 const createBlog = (title, author, url) => {

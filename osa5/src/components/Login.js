@@ -19,7 +19,7 @@ const LoginForm = (props) => {
                 name="password"
                 />
             </div>
-            <button type="submit">kirjaudu</button>
+            <button className="loginBtn" type="submit">kirjaudu</button>
             </form>
         </div>
     )
