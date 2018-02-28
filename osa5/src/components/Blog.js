@@ -1,13 +1,39 @@
 import React from 'react'
 import blogService from '../services/blogs'
 
-export const Blog = ({blog}) => (
-  <div>
-    {blog.title}
-    {blog.author}
-  </div>
-)
+export class Blog extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      detailsVisible: false
+    }
+  }
 
+  render() {
+    const blogStyle = {
+      paddingTop: 10,
+      paddingLeft: 2,
+      border: 'solid',
+      borderWidth: 1,
+      marginBottom: 5
+    }
+
+    console.log(this.props.blog)
+      return (
+        <div style={blogStyle} onClick={e => this.setState({detailsVisible: !this.state.detailsVisible})}>
+          <p>{this.props.blog.author}: {this.props.blog.title}</p>
+
+          {this.state.detailsVisible &&
+             <div>
+               <p><a href={this.props.blog.url}>{this.props.blog.url}</a></p>
+               <p>Likes: {this.props.blog.likes} <button>Like</button></p>
+               <p>Added by: {this.props.blog.user.name}</p>
+             </div>
+            }
+        </div>
+      )
+  }
+}
 export class BlogForm extends React.Component {
   constructor(props) {
     super(props)
@@ -40,9 +66,8 @@ export class BlogForm extends React.Component {
         this
           .props
           .handleBlogAdded(this.state.title, this.state.author, this.state.url)
-        this.setState({title: '', author: '', url: ''})
+        this.setState({title: '', author: '', url: '', formVisible: false})
       })
-
   }
 
   render() {
