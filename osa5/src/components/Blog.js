@@ -16,7 +16,9 @@ export class Blog extends React.Component {
     this.props.blog.likes++;
 
     blogService.voteBlog(this.props.blog._id, {
-      'user': this.props.blog.user !== undefined ? this.props.blog.user._id:undefined,
+      'user': this.props.blog.user !== undefined
+        ? this.props.blog.user._id
+        : undefined,
       'likes': this.props.blog.likes,
       'author': this.props.blog.author,
       'title': this.props.blog.title,
@@ -27,16 +29,20 @@ export class Blog extends React.Component {
   }
 
   handleDelete = () => {
-    if(!window.confirm("Delete " + this.props.blog.title + "?")) return;
-    blogService.deleteBlog(this.props.blog._id)
-        .then(resp => {
-          this.setState({deleted: true})
-        })
+    if (!window.confirm("Delete " + this.props.blog.title + "?")) 
+      return;
+    blogService
+      .deleteBlog(this.props.blog._id)
+      .then(resp => {
+        this.setState({deleted: true})
+      })
   }
 
   render() {
-    if(this.state.deleted) {
-      return (<div></div>)
+    if (this.state.deleted) {
+      return (
+        <div></div>
+      )
     }
 
     const blogStyle = {
@@ -48,27 +54,28 @@ export class Blog extends React.Component {
     }
 
     return (
-      <div
-        style={blogStyle}
-        >
-        <p onClick={e => this.setState({
-        detailsVisible: !this.state.detailsVisible
-      })}>{this.props.blog.author}: {this.props.blog.title}</p>
+      <div style={blogStyle}>
+        <p
+          className="details"
+          onClick={e => this.setState({
+          detailsVisible: !this.state.detailsVisible
+        })}>{this.props.blog.author}: {this.props.blog.title}</p>
 
-        {this.state.detailsVisible && <div>
-          <p>
-            <a href={this.props.blog.url}>{this.props.blog.url}</a>
-          </p>
-          <p>Likes: {this.state.likes}
-            <button onClick={this.handleVote}>Like</button>
-          </p>
-          <p>Added by: {this.props.blog.user === undefined ? "anonymous":this.props.blog.user.name}</p>
-          
-          
-          {(this.props.blog.user === undefined || this.props.blog.user.username === this.props.username) && 
-            <button onClick={this.handleDelete}>Delete</button>}
-        </div>
-}
+        {this.state.detailsVisible &&
+          <div className="extended-details">
+            <p>
+              <a href={this.props.blog.url}>{this.props.blog.url}</a>
+            </p>
+            <p>Likes: {this.state.likes}
+              <button onClick={this.handleVote}>Like</button>
+            </p>
+            <p>Added by: {this.props.blog.user === undefined
+                ? "anonymous"
+                : this.props.blog.user.name}</p>
+
+            {(this.props.blog.user === undefined || this.props.blog.user.username === this.props.username) && <button onClick={this.handleDelete}>Delete</button>}
+          </div>
+        }
       </div>
     )
   }
@@ -138,7 +145,6 @@ export class BlogForm extends React.Component {
   }
 }
 
-
 BlogForm.propTypes = {
-  handleBlogAdded: PropTypes.func.isRequired,
+  handleBlogAdded: PropTypes.func.isRequired
 }
