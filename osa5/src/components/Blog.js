@@ -34,9 +34,10 @@ export class BlogForm extends React.Component {
     event.preventDefault()
     
     blogService.createBlog(this.state.title, this.state.author, this.state.url).then(resp => {
-
+      this.props.handleBlogAdded(this.state.title, this.state.author, this.state.url)
+      this.setState({title: '', author: '', url: ''})
     })
-    this.setState({title: '', author: '', url: ''})
+    
   }
 
   render() {

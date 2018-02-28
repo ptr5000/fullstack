@@ -3,13 +3,37 @@ import {Blog, BlogForm} from './components/Blog'
 import blogService from './services/blogs'
 import LoginForm from './components/Login'
 
+export class MessageBox extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {message: props.message}
+  }
+
+  
+  render() {
+    if (this.state.message != null) {
+      return (
+        <div className="messageBox">
+          <p>{this.props.message}</p>
+        </div>
+      )
+    } else {
+      return (
+        <div></div>
+      )
+    }
+  }
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       blogs: [],
       username: '',
-      password: ''
+      password: '',
+      message: ''
     }
     let token = window
       .localStorage
@@ -45,6 +69,9 @@ class App extends React.Component {
         this.setState({token})
         blogService.setToken(token['token'])
       })
+      .catch(resp => {
+        this.setMessage('Login failed');
+      })
   }
 
   handleLogout = (event) => {
@@ -63,12 +90,24 @@ class App extends React.Component {
     this.setState({username: event.target.value})
   }
 
+  handleBlogAdded = (title, author, url) => {
+    this.setMessage('Added blog ' + title + ' by ' + author)
+  }
+
+  setMessage = (message) => {
+    this.setState({message})
+
+    setTimeout(() => {
+      this.setState({message: null})
+    }, 1500)
+  }
+
   render() {
 
     if (this.state.token == null) {
       return (
         <div>
-
+          <MessageBox message={this.state.message} />
           <LoginForm
             handleLogin={this.handleLogin}
             username={this.state.username}
@@ -81,13 +120,16 @@ class App extends React.Component {
 
       return (
         <div>
+          <MessageBox message={this.state.message} />
+
           <h2>blogs</h2>
 
-          <p>{this.state.token.name} logged in
+          <p>{this.state.token.name}
+            logged in
             <button onClick={this.handleLogout}>Log out</button>
           </p>
 
-          <BlogForm/> {this
+          <BlogForm handleBlogAdded={this.handleBlogAdded} /> {this
             .state
             .blogs
             .map(blog => <Blog key={blog._id} blog={blog}/>)}
