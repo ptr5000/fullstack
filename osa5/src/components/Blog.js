@@ -6,23 +6,38 @@ export class Blog extends React.Component {
     super(props)
     this.state = {
       detailsVisible: false,
+      deleted: false,
       likes: this.props.blog.likes
     }
   }
 
   handleVote = () => {
+    this.props.blog.likes++;
+
     blogService.voteBlog(this.props.blog._id, {
-      'user': this.props.blog.user._id,
-      'likes': this.props.blog.likes + 1,
+      'user': this.props.blog.user !== undefined ? this.props.blog.user._id:undefined,
+      'likes': this.props.blog.likes,
       'author': this.props.blog.author,
       'title': this.props.blog.title,
       'url': this.props.blog.url
     })
 
-    this.setState({likes: this.state.likes+1})
+    this.setState({likes: this.props.blog.likes})
+  }
+
+  handleDelete = () => {
+    if(!window.confirm("Delete " + this.props.blog.title + "?")) return;
+    blogService.deleteBlog(this.props.blog._id)
+        .then(resp => {
+          this.setState({deleted: true})
+        })
   }
 
   render() {
+    if(this.state.deleted) {
+      return (<div></div>)
+    }
+
     const blogStyle = {
       paddingTop: 10,
       paddingLeft: 2,
@@ -46,7 +61,11 @@ export class Blog extends React.Component {
           <p>Likes: {this.state.likes}
             <button onClick={this.handleVote}>Like</button>
           </p>
-          <p>Added by: {this.props.blog.user.name}</p>
+          <p>Added by: {this.props.blog.user === undefined ? "anonymous":this.props.blog.user.name}</p>
+          
+          
+          {(this.props.blog.user === undefined || this.props.blog.user.username === this.props.username) && 
+            <button onClick={this.handleDelete}>Delete</button>}
         </div>
 }
       </div>

@@ -58,7 +58,7 @@ blogRouter.delete('/api/blogs/:id', async(request, response) => {
 
   let blog = await Blog.findById(request.params.id)
   
-  if(blog.user.toString() !== decodedToken.id) {
+  if(blog.user !== undefined && blog.user.toString() !== decodedToken.id) {
     response
       .status(401)
       .end()

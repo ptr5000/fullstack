@@ -7,10 +7,11 @@ export class MessageBox extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {message: props.message}
+    this.state = {
+      message: props.message
+    }
   }
 
-  
   render() {
     if (this.state.message != null) {
       return (
@@ -50,7 +51,11 @@ class App extends React.Component {
   componentDidMount() {
     blogService
       .getAll()
-      .then(blogs => this.setState({blogs: blogs.sort((a,b)=>{return b.likes - a.likes;})}))
+      .then(blogs => this.setState({
+        blogs: blogs.sort((a, b) => {
+          return b.likes - a.likes;
+        })
+      }))
   }
 
   handleLogin = (event) => {
@@ -106,7 +111,7 @@ class App extends React.Component {
     if (this.state.token == null) {
       return (
         <div>
-          <MessageBox message={this.state.message} />
+          <MessageBox message={this.state.message}/>
           <LoginForm
             handleLogin={this.handleLogin}
             username={this.state.username}
@@ -116,22 +121,21 @@ class App extends React.Component {
         </div>
       )
     } else {
-
+      
       return (
         <div>
-          <MessageBox message={this.state.message} />
+          <MessageBox message={this.state.message}/>
 
           <h2>blogs</h2>
 
-          <p>{this.state.token.name}
-            logged in
+          <p>{this.state.token.name}&nbsp;logged in
             <button onClick={this.handleLogout}>Log out</button>
           </p>
 
-          <BlogForm handleBlogAdded={this.handleBlogAdded} /> {this
+          <BlogForm handleBlogAdded={this.handleBlogAdded}/> {this
             .state
             .blogs
-            .map(blog => <Blog key={blog._id} blog={blog}/>)}
+            .map(blog => <Blog key={blog._id} blog={blog} username={this.state.token.username}/>)}
         </div>
       );
     }

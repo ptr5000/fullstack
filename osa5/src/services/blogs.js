@@ -19,20 +19,46 @@ const login = (username, password) => {
 
 const createBlog = (title, author, url) => {
   const config = {
-    headers: { 'Authorization': token }
+    headers: {
+      'Authorization': token
+    }
   }
 
-  const request = axios.post('/api/blogs', {title, author, url}, config)
+  const request = axios.post('/api/blogs', {
+    title,
+    author,
+    url
+  }, config)
   return request.then(response => response.data)
 }
 
 const voteBlog = (id, blogData) => {
   const config = {
-    headers: { 'Authorization': token }
+    headers: {
+      'Authorization': token
+    }
   }
 
   const request = axios.put('/api/blogs/' + id, blogData, config)
   return request.then(response => response.data)
 }
 
-export default { getAll, login, createBlog, setToken, voteBlog }
+const deleteBlog = (id) => {
+  const config = {
+    headers: {
+      'Authorization': token
+    }
+  }
+
+  const request = axios.delete('/api/blogs/' + id, config)
+  return request.then(response => response.data)
+}
+
+export default {
+  getAll,
+  login,
+  createBlog,
+  setToken,
+  voteBlog,
+  deleteBlog
+}
