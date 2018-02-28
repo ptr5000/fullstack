@@ -50,8 +50,7 @@ class App extends React.Component {
   componentDidMount() {
     blogService
       .getAll()
-      .then(blogs => this.setState({blogs}))
-
+      .then(blogs => this.setState({blogs: blogs.sort((a,b)=>{return b.likes - a.likes;})}))
   }
 
   handleLogin = (event) => {

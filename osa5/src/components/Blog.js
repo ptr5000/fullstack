@@ -5,8 +5,21 @@ export class Blog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      detailsVisible: false
+      detailsVisible: false,
+      likes: this.props.blog.likes
     }
+  }
+
+  handleVote = () => {
+    blogService.voteBlog(this.props.blog._id, {
+      'user': this.props.blog.user._id,
+      'likes': this.props.blog.likes + 1,
+      'author': this.props.blog.author,
+      'title': this.props.blog.title,
+      'url': this.props.blog.url
+    })
+
+    this.setState({likes: this.state.likes+1})
   }
 
   render() {
@@ -18,20 +31,26 @@ export class Blog extends React.Component {
       marginBottom: 5
     }
 
-    console.log(this.props.blog)
-      return (
-        <div style={blogStyle} onClick={e => this.setState({detailsVisible: !this.state.detailsVisible})}>
-          <p>{this.props.blog.author}: {this.props.blog.title}</p>
+    return (
+      <div
+        style={blogStyle}
+        >
+        <p onClick={e => this.setState({
+        detailsVisible: !this.state.detailsVisible
+      })}>{this.props.blog.author}: {this.props.blog.title}</p>
 
-          {this.state.detailsVisible &&
-             <div>
-               <p><a href={this.props.blog.url}>{this.props.blog.url}</a></p>
-               <p>Likes: {this.props.blog.likes} <button>Like</button></p>
-               <p>Added by: {this.props.blog.user.name}</p>
-             </div>
-            }
+        {this.state.detailsVisible && <div>
+          <p>
+            <a href={this.props.blog.url}>{this.props.blog.url}</a>
+          </p>
+          <p>Likes: {this.state.likes}
+            <button onClick={this.handleVote}>Like</button>
+          </p>
+          <p>Added by: {this.props.blog.user.name}</p>
         </div>
-      )
+}
+      </div>
+    )
   }
 }
 export class BlogForm extends React.Component {
@@ -72,21 +91,21 @@ export class BlogForm extends React.Component {
 
   render() {
 
-    if(this.state.formVisible) {
+    if (this.state.formVisible) {
 
-      return (    
-          <div className="registrationForm">
-            <form onSubmit={this.handleCreate}>
-              <label>Title:</label>
-              <input value={this.state.title} onChange={this.handleTitleChange}/>
-              <label>Author:</label>
-              <input value={this.state.author} onChange={this.handleAuthorChange}/>
-              <label>URL:</label>
-              <input value={this.state.url} onChange={this.handleURLChange}/>
-              <button type="submit">Create</button>
-              <button onClick={e => this.setState({formVisible: false})}>Cancel</button>
-            </form>
-          </div>
+      return (
+        <div className="registrationForm">
+          <form onSubmit={this.handleCreate}>
+            <label>Title:</label>
+            <input value={this.state.title} onChange={this.handleTitleChange}/>
+            <label>Author:</label>
+            <input value={this.state.author} onChange={this.handleAuthorChange}/>
+            <label>URL:</label>
+            <input value={this.state.url} onChange={this.handleURLChange}/>
+            <button type="submit">Create</button>
+            <button onClick={e => this.setState({formVisible: false})}>Cancel</button>
+          </form>
+        </div>
       )
     } else {
       return (
