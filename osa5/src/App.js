@@ -1,5 +1,5 @@
 import React from 'react'
-import Blog from './components/Blog'
+import {Blog, BlogForm} from './components/Blog'
 import blogService from './services/blogs'
 import LoginForm from './components/Login'
 
@@ -12,11 +12,12 @@ class App extends React.Component {
       password: ''
     }
     let token = window
-        .localStorage
-        .getItem('token')
+      .localStorage
+      .getItem('token')
 
-    if(token != null) {
+    if (token != null) {
       this.state.token = JSON.parse(token)
+      blogService.setToken(this.state.token['token'])
     }
 
     console.log(this.state.token)
@@ -42,6 +43,7 @@ class App extends React.Component {
           .setItem('token', JSON.stringify(token));
 
         this.setState({token})
+        blogService.setToken(token['token'])
       })
   }
 
@@ -50,7 +52,7 @@ class App extends React.Component {
       .localStorage
       .removeItem('token')
 
-      this.setState({token: null})
+    this.setState({token: null})
   }
 
   handlePasswordChange = (event) => {
@@ -80,9 +82,12 @@ class App extends React.Component {
       return (
         <div>
           <h2>blogs</h2>
-          <p>{this.state.token.name} logged in <button onClick={this.handleLogout}>Log out</button></p>
-          
-          {this
+
+          <p>{this.state.token.name} logged in
+            <button onClick={this.handleLogout}>Log out</button>
+          </p>
+
+          <BlogForm/> {this
             .state
             .blogs
             .map(blog => <Blog key={blog._id} blog={blog}/>)}
