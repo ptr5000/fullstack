@@ -2,6 +2,27 @@ import React from 'react';
 
 
 class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      newAnecdote: ''
+    }
+  }
+
+  handleTextChange = (event) => {
+    this.setState({newAnecdote: event.target.value})
+  }
+
+  handleCreate = (event) => {
+    let {store} = this.props
+
+    event.preventDefault()
+
+    store.dispatch({type: "ADD_ANECDOTE", text: this.state.newAnecdote})
+
+    this.setState({newAnecdote: ''})
+  }
+
   render() {
     let {store} = this.props
     const anecdotes = store.getState()
@@ -21,9 +42,10 @@ class App extends React.Component {
           </div>
         )}
         <h2>create new</h2>
-        <form>
-          <div><input /></div>
-          <button>create</button> 
+        <form onSubmit={this.handleCreate}>
+          <div><input value={this.state.newAnecdote} onChange={this.handleTextChange}/>
+           </div>
+          <button type="submit">create</button> 
         </form>
       </div>
     )

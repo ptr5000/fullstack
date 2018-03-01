@@ -28,6 +28,8 @@ const reducer = (state = initialState, action) => {
           let ob = state.find(k=>k.id === action.id)
           ob.votes++;
           return [...state]
+    case 'ADD_ANECDOTE':
+          return [...state, asObject(action.text)]
     default:
         return state;
           
