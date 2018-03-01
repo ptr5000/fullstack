@@ -21,8 +21,5 @@ describe.only('<Blog />', () => {
     const extdetails2 = blogComponent.find('.extended-details')
 
     expect(extdetails2.length).toBe(1)
-    
-    
   })
-
 })
