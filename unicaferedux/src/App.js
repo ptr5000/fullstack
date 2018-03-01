@@ -1,8 +1,7 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 
-const Statistiikka = () => {
-  const palautteita = 0
+const Statistiikka = ({store}) => {
+  const palautteita = store.getState().good + store.getState().ok + store.getState().bad
 
   if (palautteita === 0) {
     return (
@@ -20,35 +19,35 @@ const Statistiikka = () => {
         <tbody>
           <tr>
             <td>hyvä</td>
-            <td></td>
+            <td>{store.getState().good}</td>
           </tr>
           <tr>
             <td>neutraali</td>
-            <td></td>
+            <td>{store.getState().ok}</td>
           </tr>
           <tr>
             <td>huono</td>
-            <td></td>
+            <td>{store.getState().bad}</td>
           </tr>
           <tr>
-            <td>keskiarvo</td>
+            <td>hyviä</td>
             <td></td>
+
+             {((store.getState().good) / palautteita * 100).toFixed(1)}% 
+             
           </tr>
-          <tr>
-            <td>positiivisia</td>
-            <td></td>
-          </tr>
+       
         </tbody>
       </table>
 
-      <button>nollaa tilasto</button>
+      <button onClick={(e)=>{store.dispatch({type: "ZERO"})}}>nollaa tilasto</button>
     </div >
   )
 }
 
 class App extends React.Component {
   klik = (nappi) => () => {
-
+    this.props.store.dispatch({type:nappi})
   }
 
   render() {
@@ -58,7 +57,7 @@ class App extends React.Component {
         <button onClick={this.klik('GOOD')}>hyvä</button>
         <button onClick={this.klik('OK')}>neutraali</button>
         <button onClick={this.klik('BAD')}>huono</button>
-        <Statistiikka />
+        <Statistiikka store={this.props.store} />
       </div>
     )
   }

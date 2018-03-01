@@ -1,67 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import counterReducer from './reducer'
+import {createStore} from 'redux'
 
-const Statistiikka = () => {
-  const palautteita = 0
+const store = createStore(counterReducer)
 
-  if (palautteita === 0) {
-    return (
-      <div>
-        <h2>stataistiikka</h2>
-        <div>ei yhtään palautetta annettu</div>
-      </div>
-    )
-  }
 
-  return (
-    <div>
-      <h2>statistiikka</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td>hyvä</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>neutraali</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>huono</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>keskiarvo</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>positiivisia</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <button>nollaa tilasto</button>
-    </div >
-  )
+const renderApp = () => {
+    ReactDOM.render(<App store={store}/>, document.getElementById('root'));
 }
 
-class App extends React.Component {
-  klik = (nappi) => () => {
-
-  }
-
-  render() {
-    return (
-      <div>
-        <h2>anna palautetta</h2>
-        <button onClick={this.klik('GOOD')}>hyvä</button>
-        <button onClick={this.klik('OK')}>neutraali</button>
-        <button onClick={this.klik('BAD')}>huono</button>
-        <Statistiikka />
-      </div>
-    )
-  }
-}
-
-ReactDOM.render(<App />, document.getElementById('root'));
+  
+renderApp()
+store.subscribe(renderApp)
