@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {createAnecdote} from '../reducers/anecdoteReducer.js'
+import {setNotification} from '../reducers/notificationReducer.js'
 
 class AnecdoteForm extends React.Component {
   handleSubmit = (e) => {
@@ -8,7 +9,7 @@ class AnecdoteForm extends React.Component {
     const content = e.target.anecdote.value
 
     this.props.store.dispatch(createAnecdote(content))
-  
+    this.props.store.dispatch(setNotification("New anecdote created"))
     e.target.anecdote.value = ''
   }
    render() {

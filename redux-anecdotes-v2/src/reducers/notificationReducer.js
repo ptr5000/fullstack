@@ -1,16 +1,15 @@
 
 
-const initialState = {message: 'default message'}
+const initialState = {message: null}
 
 
 const notificationReducer = (state = initialState, action) => {
     
     switch(action.type) {
         case 'SET_NOTIFICATION': 
-            return [...state, {message:action.message}]
+            return {...state, message:action.message}
         default:
             return state
-
     }
 }
 
