@@ -4,6 +4,7 @@ import {setNotification} from '../reducers/notificationReducer.js'
 import Filter from './Filter'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import client from '../services/client'
 
 
 class AnecdoteList extends React.Component {
@@ -23,8 +24,10 @@ class AnecdoteList extends React.Component {
             <div>
               has {anecdote.votes}
               <button onClick={() => {
-                store.dispatch(vote(anecdote.id))
-                store.dispatch(setNotification("Voted"))
+                client.vote(anecdote).then(resp => {
+                  store.dispatch(vote(anecdote.id))
+                  store.dispatch(setNotification("Voted"))
+                })
               }
               }>
                 vote

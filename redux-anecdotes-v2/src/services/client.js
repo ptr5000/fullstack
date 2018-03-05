@@ -5,4 +5,13 @@ const getAll = async () => {
   return response.data
 }
 
-export default { getAll }
+const addAnecdote = async (content) => {
+    return axios.post('http://localhost:3001/anecdotes', {content, votes: 0})
+}
+
+const vote = async (obj) => {
+    return axios.put('http://localhost:3001/anecdotes/' + obj.id, {...obj, votes: obj.votes+1})
+}
+
+
+export default { getAll, addAnecdote, vote }
